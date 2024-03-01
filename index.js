@@ -51,7 +51,7 @@ db.once('open', function () {
     if (!user) {
       user = new UserModel({
         userId: message.author.id,
-        userName: message.author.username,
+        userName: message.author.displayName,
         points: 0,
       });
     }
