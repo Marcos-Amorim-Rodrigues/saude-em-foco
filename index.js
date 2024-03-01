@@ -19,6 +19,7 @@ db.once('open', function () {
   // Esquema e modelo para os dados do usuário
   const userSchema = new mongoose.Schema({
     userId: String,
+    userName: String,
     points: Number,
   });
 
@@ -48,7 +49,11 @@ db.once('open', function () {
 
     let user = await UserModel.findOne({ userId: message.author.id });
     if (!user) {
-      user = new UserModel({ userId: message.author.id, points: 0 });
+      user = new UserModel({
+        userId: message.author.id,
+        userName: message.author.username,
+        points: 0,
+      });
     }
 
     if (message.attachments.size > 0) {
