@@ -1,5 +1,5 @@
 import { Client, IntentsBitField } from 'discord.js';
-const express = require('express');
+import express from 'express';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config();
