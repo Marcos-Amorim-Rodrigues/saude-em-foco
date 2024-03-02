@@ -1,7 +1,12 @@
 import { Client, IntentsBitField } from 'discord.js';
+const express = require('express');
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config();
+
+const app = express();
+app.use(express.json());
+const port = 3000;
 
 // Conectar ao MongoDB com opções para conectar imediatamente
 mongoose.connect(process.env.MONGODB_URI, {
@@ -112,4 +117,36 @@ db.once('open', function () {
   });
 
   client.login(process.env.TOKEN);
+});
+
+app.use((request, response, next) => {
+  request.header('Access-Control-Allow-Origin', '*');
+  request.header(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,OPTIONS,POST,PATCH,DELETE,PUT',
+  );
+  request.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
+  response.header('Access-Control-Allow-Origin', '*');
+  response.header(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,OPTIONS,POST,PATCH,DELETE,PUT',
+  );
+  response.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  );
+  next();
+});
+
+app.get('/', async (req, res) => {
+  const data = await UserModel.find();
+  res.send(data);
+  return data;
+});
+
+app.listen(port, () => {
+  console.log('App running');
 });
